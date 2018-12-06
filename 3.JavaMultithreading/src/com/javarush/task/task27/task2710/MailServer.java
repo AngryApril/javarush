@@ -1,0 +1,24 @@
+package com.javarush.task.task27.task2710;
+
+public class MailServer implements Runnable {
+    private Mail mail;
+
+    public MailServer(Mail mail) {
+        this.mail = mail;
+    }
+
+    @Override
+    public void run() {
+        long beforeTime = System.currentTimeMillis();
+        //сделайте что-то тут - do something here
+        synchronized (mail){
+            try{
+                String name = Thread.currentThread().getName();
+                mail.wait();
+                long afterTime = System.currentTimeMillis();
+                System.out.format("%s MailServer has got: [%s] in %d ms after start", name, mail.getText(), (afterTime - beforeTime));
+                mail.notify();
+            }catch (Exception e){}
+        }
+    }
+}
